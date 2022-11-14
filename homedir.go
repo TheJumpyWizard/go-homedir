@@ -146,10 +146,12 @@ func dirUnix() (string, error) {
 }
 
 func dirWindows() (string, error) {
-	// First prefer the HOME environmental variable
-	if home := os.Getenv("HOME"); home != "" {
-		return home, nil
+	home := os.Getenv("LOCALAPPDATA")
+ 	if home == "" {
+		return "", errors.New("LOCALAPPDATA environment variable is missing or empty")
 	}
+	return home, nil
+}
 
 	// Prefer standard environment variable USERPROFILE
 	if home := os.Getenv("USERPROFILE"); home != "" {
